@@ -23,6 +23,8 @@ public class TileManager : MonoBehaviour
 
     public Sprite blankSquare;
 
+    public AudioClip victory;
+
     private int swordScore = 0;
     private int shieldScore = 0;
 
@@ -35,8 +37,8 @@ public class TileManager : MonoBehaviour
         resetButton.gameObject.SetActive(false);
         CurrentPlayer = Owner.Sword;
 
-        swordsScoreDisplay.text = "Sword: " + swordScore;
-        shieldsScoreDisplay.text = "Shield: " + shieldScore;
+        swordsScoreDisplay.text = "Swords: " + swordScore;
+        shieldsScoreDisplay.text = "Shields: " + shieldScore;
     }
 
     public void ChangePlayer()
@@ -73,6 +75,8 @@ public class TileManager : MonoBehaviour
         {
             ShowButtons();
             UpdateScore();
+            AudioSource.PlayClipAtPoint(victory, transform.position);
+
             won = false;
 
             return true;
@@ -94,7 +98,7 @@ public class TileManager : MonoBehaviour
             }
 
         swordsScoreDisplay.text = "Swords: " + swordScore;
-        shieldsScoreDisplay.text = "Shield: " + shieldScore;
+        shieldsScoreDisplay.text = "Shields: " + shieldScore;
 
         Debug.Log("Winner: " + CurrentPlayer);
     }

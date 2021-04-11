@@ -18,6 +18,11 @@ public class TileManager : MonoBehaviour
     public Text swordsScoreDisplay;
     public Text shieldsScoreDisplay;
 
+    public Button resetButton;
+    public Button quitButton;
+
+    public Sprite blankSquare;
+
     private int swordScore = 0;
     private int shieldScore = 0;
 
@@ -27,6 +32,7 @@ public class TileManager : MonoBehaviour
     void Start()
     {
         won = false;
+        resetButton.gameObject.SetActive(false);
         CurrentPlayer = Owner.Sword;
 
         swordsScoreDisplay.text = "Sword: " + swordScore;
@@ -65,18 +71,54 @@ public class TileManager : MonoBehaviour
 
         if (won)
         {
-            if (CurrentPlayer == Owner.Sword)
-                swordScore++;
-            else
-                shieldScore++;
+            ShowButtons();
+            UpdateScore();
+            won = false;
 
-            swordsScoreDisplay.text = "Swords: " + swordScore;
-            shieldsScoreDisplay.text = "Shield: " + shieldScore;
-
-            Debug.Log("Winner: " + CurrentPlayer);
             return true;
         }
 
         return false;
     }
+
+    private void UpdateScore()
+    {
+        if (won)
+            if (CurrentPlayer == Owner.Sword)
+            {
+                swordScore++;
+            }
+            else
+            {
+                shieldScore++;
+            }
+
+        swordsScoreDisplay.text = "Swords: " + swordScore;
+        shieldsScoreDisplay.text = "Shield: " + shieldScore;
+
+        Debug.Log("Winner: " + CurrentPlayer);
+    }
+
+    private void ShowButtons()
+    {
+        resetButton.gameObject.SetActive(true);
+        quitButton.gameObject.SetActive(true);
+    }
+
+    public void ResetGame()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            Tiles[i].GetComponent<SpriteRenderer>().sprite = blankSquare;
+            Tiles[i].owner = Owner.None;
+        }
+
+        won = false;
+
+        Debug.Log("Reset initiated.");
+        resetButton.gameObject.SetActive(false);
+        quitButton.gameObject.SetActive(false);
+    }
+
+
 }
